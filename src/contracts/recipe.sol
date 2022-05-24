@@ -27,12 +27,15 @@ contract RecipeDaap {
     struct Recipe {
         address payable owner;
         string title;
-        string description;
+        string recipeOfTheDish;
         string image;
         uint price;
     }
 
     mapping (uint => Recipe) internal recipes;
+    
+    //Maps index of the recepie to the array of addresses that has bought the recepie
+    mapping(uint256 => address[]) internal buyers;
 
     function addRecipe(
         string memory _title,
@@ -55,15 +58,13 @@ contract RecipeDaap {
 
     function getRecipe(uint _index) public view returns (
         address payable,
-        string memory, 
-        string memory, 
+        string memory,  
         string memory, 
         uint 
     ) {
         return (
             recipes[_index].owner,
-            recipes[_index].title, 
-            recipes[_index].description, 
+            recipes[_index].title,  
             recipes[_index].image, 
             recipes[_index].price
         );
@@ -83,6 +84,25 @@ contract RecipeDaap {
           ),
           "Transfer failed."
         );
+        buyers[_index].push(msg.sender);
+
+    }
+
+    //Function to retreive the secret recepie for the buyers
+    function getRecipeOfTheDish(uint _index) public view returns(string memory){
+        require(hasBought(_index) == true, "Need to buy the recipie to view the recepie");
+        return recipes[_index].recipeOfTheDish;
+    }
+
+    //Function that checks if the user has bought the course or not
+    function hasBought(uint _index) private view returns(bool){
+        address[] memory boughtAdresses = buyers[_index];
+        for (uint i = 0; i < boughtAdresses.length; i++) {
+            if (boughtAdresses[i] == msg.sender) {
+                return true;
+            }
+        }
+        return false;
     }
     
     function getRecipesLength() public view returns (uint) {
