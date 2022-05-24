@@ -9,7 +9,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import Web3 from "web3";
 import { newKitFromWeb3 } from "@celo/contractkit";
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 
 
 import recipe from "./contracts/recipe.abi.json";
@@ -124,14 +124,15 @@ function App() {
           try {
             const cUSDContract = new kit.web3.eth.Contract(IERC, cUSDContractAddress);
             await cUSDContract.methods
-              .approve(contractAddress, recipe[_index].price)
-              .send({ from: address });
+            .approve(contractAddress, recipe[_index].price)
+            .send({ from: address });
             await contract.methods.buyRecipe(_index).send({ from: address });
+            console.log("Starting with the process");
             getRecipes();
             getBalance();
             alert("you have successfully bought the recipe");
           } catch (error) {
-            alert(error);
+            console.log(error);
           }};
 
           const changePrice = async (_index, _price) => {
@@ -140,7 +141,7 @@ function App() {
               getRecipes();
               alert("you have successfully changed the recipe price");
             } catch (error) {
-              alert(error);
+              console.log(error);
             }};
 
     

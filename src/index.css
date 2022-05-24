@@ -85,3 +85,8 @@ font-size: small;
 .form-group{
   padding-left: 0px;
 }
+
+.card-img-top{
+  height: 300px;
+  width: 200px;
+}

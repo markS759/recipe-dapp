@@ -9,12 +9,12 @@ export const Recipes = ( props ) => {
     return (
       <div className="row">
         {props.recipes.map((r) => (
-          <div className="col-4">
-            <div className="card" key={r.index}>
+          <div className="col-4" key={r.index}>
+            <div className="card">
               <img
                 className="card-img-top"
                 src={r.image}
-                alt="Card image cap"
+                alt="Card"
               />
               <div className="card-body">
                 <h5 className="card-title">{r.title}</h5>
