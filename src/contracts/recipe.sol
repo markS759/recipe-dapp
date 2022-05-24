@@ -33,6 +33,7 @@ contract RecipeDaap {
     }
 
     mapping (uint => Recipe) internal recipes;
+    mapping (address => uint256[]) internal RecipesBought;
 
     // events
     event RecipeAdded(address indexed owner, string title, uint256 price, uint256 recipe_index);
@@ -90,10 +91,17 @@ contract RecipeDaap {
           ),
           "Transfer failed."
         );
+        // added recipe list that the msg.sender bought to a mapping
+        RecipesBought[msg.sender].push(_index);
         emit RecipeSold(msg.sender, recipes[_index].owner, _index);
     }
     
     function getRecipesLength() public view returns (uint) {
         return (recipesLength);
+    }
+
+    // only get index of those recipes that I bought
+    function getMyRecipe() public view returns (uint256[] memory) {
+        return RecipesBought[msg.sender];
     }
 }
