@@ -5,7 +5,7 @@ https://clever-lebkuchen-44b6c6.netlify.app
 
 
 # Description
-
+Recipe Dapp is a platform where users can upload their secret special recipe for other users to buy and it includes other special functionalities....All transactions are done using the cUSD stable coin.
 
 
 # Getting Started with Create React App
