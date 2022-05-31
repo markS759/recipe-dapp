@@ -32,10 +32,10 @@ const handleSetshow =() =>{
       <input type="text" class="form-control" value={title}
            onChange={(e) => setTitle(e.target.value)} placeholder="Title"/>
 
-<input type="text" class="form-control" value={description}
+<input type="text" class="form-control mt-2" value={description}
            onChange={(e) => setDescription(e.target.value)} placeholder="description"/>
 
-<input type="text" class="form-control" value={image}
+<input type="text" class="form-control mt-2" value={image}
            onChange={(e) => setImage(e.target.value)} placeholder="Image"/>
            
       <input type="text" class="form-control mt-2" value={price}

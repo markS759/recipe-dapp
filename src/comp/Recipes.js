@@ -7,7 +7,7 @@ export const Recipes = ( props ) => {
 
 
     return (
-      <div className="row">
+      <div className="row pt-4">
         {props.recipes.map((r) => (
           <div className="col-4">
             <div className="card" key={r.index}>
@@ -21,15 +21,17 @@ export const Recipes = ( props ) => {
                 <h6 className="card-subtitle">{r.price} cUSD</h6>
                 <p className="card-text">{r.description}</p>
               
+                  {props.walletAddress !== r.owner && (
                   <button
                     onClick={() => props.buyRecipe(r.index)}
                     className="btn btn-primary"
                   >
                     Buy Recipe
-                  </button>
+                  </button>)}
                   
-                <form>
-                  <div class="form-row">
+                { props.walletAddress === r.owner &&(
+                  <form>
+                  <div class="form-roww pt-2 ">
                     <input
                       type="text"
                       className="form-control"
@@ -40,12 +42,13 @@ export const Recipes = ( props ) => {
                     <button
                       type="submit"
                       onClick={() => props.changePrice(r.index, newPrice)}
-                      className="btn btn-success"
+                      className="btn btn-success pt-1"
                     >
                       Change Price
                     </button>
                   </div>
                 </form>
+                       )}
               </div>
             </div>
           </div>

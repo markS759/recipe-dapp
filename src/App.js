@@ -164,7 +164,7 @@ function App() {
     <div className="App">
       <NavigationBar cUSDBalance={cUSDBalance} />
       <AddRecipe addRecipe={addRecipe}/>
-      <Recipes  buyRecipe={BuyRecipe} recipes={recipes} changePrice={changePrice}/>
+      <Recipes  buyRecipe={BuyRecipe} walletAddress={address} recipes={recipes} changePrice={changePrice}/>
     </div>
   );
 }

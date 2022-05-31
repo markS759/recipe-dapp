@@ -15,9 +15,6 @@ interface IERC20Token {
 }
 
 
-// delete
-// edit
-// change price
 
 contract RecipeDaap {
 
@@ -34,6 +31,8 @@ contract RecipeDaap {
 
     mapping (uint => Recipe) internal recipes;
 
+
+// this function will add a new recipe to the block-chain
     function addRecipe(
         string memory _title,
         string memory _description,
@@ -52,7 +51,7 @@ contract RecipeDaap {
         recipesLength++;
     }
 
-
+// this function will get a recipe from the block-chain
     function getRecipe(uint _index) public view returns (
         address payable,
         string memory, 
@@ -68,11 +67,32 @@ contract RecipeDaap {
             recipes[_index].price
         );
     }
+// this function will edit an existing recipe in the block-chain 
+  function editRecipe(
+      uint _index, 
+      string memory _title, 
+      string memory _description, 
+      string memory _image,
+      uint _price
+      ) public {
+    require(msg.sender == recipes[_index].owner, "you cannot edit this recipe");
+    recipes[_index].title = _title;
+    recipes[_index].description = _description;
+    recipes[_index].image = _image;
+    recipes[_index].price = _price;
+}
 
      function changeRecipePrice(uint _index, uint _price) public {
         require(msg.sender == recipes[_index].owner, "Only the owner can change the price");
         recipes[_index].price = _price;
     }
+    
+
+    function deleteRecipe(uint _index) external{
+        require(msg.sender == recipes[_index].owner, "you cannot delete this recipe");
+        delete recipes[_index];
+    }
+    
     
     function buyRecipe(uint _index) public payable  {
         require(

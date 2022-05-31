@@ -13,6 +13,7 @@ body {
     box-shadow: rgb(0 0 0 / 5%) 0px 10px 20px;
     border-radius: 0px;
     width: 25rem;
+    align-items: center;
   }
 
 .brand-name {
@@ -55,14 +56,14 @@ body {
 
 .card-title {
   color: #272c47;
-  font-family: "Open sans", sans-serif;
+  font-family: "Grape Nuts", sans-serif;
   font-weight: 600;
   font-size: large;
 }
 
 .card-text {
   color: #272c47;
-  font-family: "Open sans", sans-serif;
+  font-family: "Grape Nuts", sans-serif;
   font-weight: 500;
   font-size: medium;
 }
@@ -78,8 +79,12 @@ font-size: small;
 }
 
 .form-row {
+  width: 400px;
+}
+
+.form-roww {
   width: 200px;
-  padding-left: 0px;
+  align-items: center;
 }
 
 .form-group{
