@@ -49,8 +49,8 @@ export const Recipes = ( props ) => {
                           type="submit"
                           onClick={() => props.toggleForsale(r.index,)}
                           className="btn btn-success pt-1"
-                        >
-                          Toggle Forsale
+                        >{r.forSale ? "Toggle not for sale" : "Toggle Forsale"}
+                          
                         </button>
                          )
                        }
