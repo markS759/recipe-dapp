@@ -21,9 +21,7 @@ import IERC from "./contracts/IERC.abi.json";
 
 const ERC20_DECIMALS = 18;
 
-
-
-const contractAddress = "0x33F7a9d78B656b5CDacD9A8f5AaaB78e95DeFeEF";
+const contractAddress = "0x1cEa956feBbc172D06B97726A7A2EC1FE4c1704E";
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
@@ -89,7 +87,8 @@ function App() {
           title: recipe[1],
           description: recipe[2],
           image: recipe[3],
-          price: recipe[4],    
+          price: recipe[4], 
+          forSale: recipe[5],   
         });
       });
       recipes.push(_recipes);
@@ -105,8 +104,11 @@ function App() {
     _title,
     _description,
     _image,
-    _price
+    price
   ) => {
+    const _price = new BigNumber(price).shiftedBy(ERC20_DECIMALS).toString();
+
+
     try {
       await contract.methods
         .addRecipe(_title, _description, _image, _price)
@@ -117,14 +119,41 @@ function App() {
     }
   };
 
+  const toggleForsale = async (
+    _index
+  ) => {
+    try {
+      await contract.methods
+        .toggleForsale(_index)
+        .send({ from: address });
+      getRecipes();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+
+  const deleteRecipe = async (
+    _index
+  ) => {
+    try {
+      await contract.methods
+        .deleteRecipe(_index)
+        .send({ from: address });
+      getRecipes();
+    } catch (error) {
+      alert(error);
+    }
+  };
 
 
 
         const BuyRecipe = async (_index) => {
+          const cUSDContract = new kit.web3.eth.Contract(IERC, cUSDContractAddress);
           try {
-            const cUSDContract = new kit.web3.eth.Contract(IERC, cUSDContractAddress);
+            
             await cUSDContract.methods
-              .approve(contractAddress, recipe[_index].price)
+              .approve(contractAddress, recipes[_index].price)
               .send({ from: address });
             await contract.methods.buyRecipe(_index).send({ from: address });
             getRecipes();
@@ -133,12 +162,18 @@ function App() {
           } catch (error) {
             alert(error);
           }};
+          
 
-          const changePrice = async (_index, _price) => {
+          const changePrice = async (_index, price) => { 
+
+            const _price = new BigNumber(price).shiftedBy(ERC20_DECIMALS).toString();
+
             try {
+              
               await contract.methods.changeRecipePrice(_index, _price).send({ from: address });
               getRecipes();
               alert("you have successfully changed the recipe price");
+             
             } catch (error) {
               alert(error);
             }};
@@ -164,7 +199,13 @@ function App() {
     <div className="App">
       <NavigationBar cUSDBalance={cUSDBalance} />
       <AddRecipe addRecipe={addRecipe}/>
-      <Recipes  buyRecipe={BuyRecipe} walletAddress={address} recipes={recipes} changePrice={changePrice}/>
+      <Recipes  
+      buyRecipe={BuyRecipe} 
+      walletAddress={address} 
+      recipes={recipes} 
+      deleteRecipe={deleteRecipe}
+      toggleForsale={toggleForsale}
+       />
     </div>
   );
 }

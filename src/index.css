@@ -9,9 +9,9 @@ body {
 }
 
   .card {
-    border: 0;
+    border: 10px;
     box-shadow: rgb(0 0 0 / 5%) 0px 10px 20px;
-    border-radius: 0px;
+    border-radius: 10px;
     width: 25rem;
     align-items: center;
   }
@@ -64,6 +64,12 @@ body {
 .card-text {
   color: #272c47;
   font-family: "Grape Nuts", sans-serif;
+  font-weight: 500;
+  font-size: medium;
+}
+.card-texxt {
+  color: #272c47;
+  font-family: sans-serif;
   font-weight: 500;
   font-size: medium;
 }

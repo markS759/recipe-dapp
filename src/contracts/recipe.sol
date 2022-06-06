@@ -27,6 +27,7 @@ contract RecipeDaap {
         string description;
         string image;
         uint price;
+        bool forSale;
     }
 
     mapping (uint => Recipe) internal recipes;
@@ -46,7 +47,8 @@ contract RecipeDaap {
             _title,
             _description,
             _image,
-            _price
+            _price,
+            true
         );
         recipesLength++;
     }
@@ -57,17 +59,19 @@ contract RecipeDaap {
         string memory, 
         string memory, 
         string memory, 
-        uint 
+        uint,
+        bool
     ) {
         return (
             recipes[_index].owner,
             recipes[_index].title, 
             recipes[_index].description, 
             recipes[_index].image, 
-            recipes[_index].price
+            recipes[_index].price,
+            recipes[_index].forSale
         );
     }
-// this function will edit an existing recipe in the block-chain 
+//edit an existing recipe in the block-chain 
   function editRecipe(
       uint _index, 
       string memory _title, 
@@ -82,19 +86,28 @@ contract RecipeDaap {
     recipes[_index].price = _price;
 }
 
-     function changeRecipePrice(uint _index, uint _price) public {
+
+// change the price of a recipe in the block-chain
+     function changeRecipePrice(uint _index, uint _price) external {
         require(msg.sender == recipes[_index].owner, "Only the owner can change the price");
         recipes[_index].price = _price;
     }
-    
 
+    // toggle forsale
+    function toggleForsale(uint _index) external{
+        require(msg.sender == recipes[_index].owner, "Only admin");
+        recipes[_index].forSale = !recipes[_index].forSale;
+    }
+    
+// delete a recipe from the mapping
     function deleteRecipe(uint _index) external{
         require(msg.sender == recipes[_index].owner, "you cannot delete this recipe");
         delete recipes[_index];
     }
     
-    
+    // buy a recipe by paying in cUSD
     function buyRecipe(uint _index) public payable  {
+        require(recipes[_index].forSale == true, "This item is not for sale");
         require(
           IERC20Token(cUsdTokenAddress).transferFrom(
             msg.sender,
@@ -104,7 +117,7 @@ contract RecipeDaap {
           "Transfer failed."
         );
     }
-    
+ // get the length of the recipe mapping   
     function getRecipesLength() public view returns (uint) {
         return (recipesLength);
     }
