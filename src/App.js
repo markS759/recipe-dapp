@@ -21,7 +21,7 @@ import IERC from "./contracts/IERC.abi.json";
 
 const ERC20_DECIMALS = 18;
 
-const contractAddress = "0x1cEa956feBbc172D06B97726A7A2EC1FE4c1704E";
+const contractAddress = "0xBa218Fcb573DfaEF2B9dEF37B7b515177e3279ba";
 const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 
 
@@ -84,11 +84,12 @@ function App() {
         resolve({
           index: index,
           owner: recipe[0],
-          title: recipe[1],
-          description: recipe[2],
-          image: recipe[3],
-          price: recipe[4], 
-          forSale: recipe[5],   
+          recipeId: recipe[1],
+          title: recipe[2],
+          description: recipe[3],
+          image: recipe[4],
+          price: recipe[5], 
+          forSale: recipe[6],   
         });
       });
       recipes.push(_recipes);

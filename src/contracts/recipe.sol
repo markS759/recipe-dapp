@@ -19,15 +19,18 @@ interface IERC20Token {
 contract RecipeDaap {
 
     uint internal recipesLength = 0;
+    uint256 internal recipesId = 0;
     address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
     struct Recipe {
         address payable owner;
+         uint recipeId;
         string title;
         string description;
         string image;
         uint price;
         bool forSale;
+       
     }
 
     mapping (uint => Recipe) internal recipes;
@@ -44,6 +47,7 @@ contract RecipeDaap {
         
         recipes[recipesLength] = Recipe(
             payable(msg.sender),
+            recipesId,
             _title,
             _description,
             _image,
@@ -51,11 +55,13 @@ contract RecipeDaap {
             true
         );
         recipesLength++;
+        recipesId++;
     }
 
 // this function will get a recipe from the block-chain
     function getRecipe(uint _index) public view returns (
         address payable,
+        uint256,
         string memory, 
         string memory, 
         string memory, 
@@ -64,6 +70,7 @@ contract RecipeDaap {
     ) {
         return (
             recipes[_index].owner,
+             recipes[_index].recipeId,
             recipes[_index].title, 
             recipes[_index].description, 
             recipes[_index].image, 
@@ -93,17 +100,21 @@ contract RecipeDaap {
         recipes[_index].price = _price;
     }
 
-    // toggle forsale
-    function toggleForsale(uint _index) external{
+     // toggle forsale
+      function toggleForsale(uint _index) external{
         require(msg.sender == recipes[_index].owner, "Only admin");
         recipes[_index].forSale = !recipes[_index].forSale;
     }
+
     
-// delete a recipe from the mapping
-    function deleteRecipe(uint _index) external{
-        require(msg.sender == recipes[_index].owner, "you cannot delete this recipe");
-        delete recipes[_index];
-    }
+    // delete a recipe from the mapping
+      function deleteRecipe(uint _index) external {
+	        require(msg.sender == recipes[_index].owner, "you cannot delete this recipe");         
+            recipes[_index] = recipes[recipesLength - 1];// replace the index to delete with the last valid recipe item
+            delete recipes[recipesLength - 1]; // reset the last valid recipe item to the default value
+            recipesLength--; // reduce the total books count
+	    }
+        
     
     // buy a recipe by paying in cUSD
     function buyRecipe(uint _index) public payable  {
@@ -117,6 +128,7 @@ contract RecipeDaap {
           "Transfer failed."
         );
     }
+
  // get the length of the recipe mapping   
     function getRecipesLength() public view returns (uint) {
         return (recipesLength);
